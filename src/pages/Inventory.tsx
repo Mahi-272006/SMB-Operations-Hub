@@ -6,6 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Search, Plus, AlertTriangle, Package } from "lucide-react";
 import { useState } from "react";
 import { Progress } from "@/components/ui/progress";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
 interface InventoryItem {
   id: string;
@@ -18,8 +29,9 @@ interface InventoryItem {
 }
 
 const Inventory = () => {
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
-  const [items] = useState<InventoryItem[]>([
+  const [items, setItems] = useState<InventoryItem[]>([
     { id: "INV-001", name: "Chocolate Cupcakes", category: "Baked Goods", stock: 12, threshold: 20, unit: "units", lastUpdated: "2025-10-02" },
     { id: "INV-002", name: "Vanilla Extract", category: "Ingredients", stock: 3, threshold: 10, unit: "bottles", lastUpdated: "2025-10-01" },
     { id: "INV-003", name: "Butter (500g)", category: "Ingredients", stock: 8, threshold: 15, unit: "packs", lastUpdated: "2025-10-02" },
@@ -27,6 +39,15 @@ const Inventory = () => {
     { id: "INV-005", name: "Flour (1kg)", category: "Ingredients", stock: 45, threshold: 30, unit: "bags", lastUpdated: "2025-10-01" },
     { id: "INV-006", name: "Sugar (1kg)", category: "Ingredients", stock: 5, threshold: 20, unit: "bags", lastUpdated: "2025-09-30" },
   ]);
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newItem, setNewItem] = useState({
+    name: "",
+    category: "",
+    stock: "",
+    threshold: "",
+    unit: "units",
+  });
 
   const getStockStatus = (stock: number, threshold: number) => {
     const percentage = (stock / threshold) * 100;
@@ -37,6 +58,45 @@ const Inventory = () => {
 
   const getStockPercentage = (stock: number, threshold: number) => {
     return Math.min((stock / threshold) * 100, 100);
+  };
+
+  const handleAddItem = () => {
+    if (!newItem.name || !newItem.category || !newItem.stock || !newItem.threshold) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const itemNumber = items.length + 1;
+    const today = new Date().toISOString().split('T')[0];
+    
+    const item: InventoryItem = {
+      id: `INV-${String(itemNumber).padStart(3, '0')}`,
+      name: newItem.name,
+      category: newItem.category,
+      stock: parseInt(newItem.stock),
+      threshold: parseInt(newItem.threshold),
+      unit: newItem.unit,
+      lastUpdated: today,
+    };
+
+    setItems([...items, item]);
+    setNewItem({
+      name: "",
+      category: "",
+      stock: "",
+      threshold: "",
+      unit: "units",
+    });
+    setDialogOpen(false);
+    
+    toast({
+      title: "Success",
+      description: "Item added successfully",
+    });
   };
 
   const filteredItems = items.filter(
@@ -54,10 +114,105 @@ const Inventory = () => {
             <h1 className="text-3xl font-bold text-foreground mb-2">Inventory</h1>
             <p className="text-muted-foreground">Track and manage your stock levels</p>
           </div>
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            Add Item
-          </Button>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                Add Item
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px]">
+              <DialogHeader>
+                <DialogTitle>Add New Item</DialogTitle>
+                <DialogDescription>
+                  Add a new item to your inventory. Stock status will be calculated automatically.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="name">Product Name</Label>
+                  <Input
+                    id="name"
+                    value={newItem.name}
+                    onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+                    placeholder="Enter product name"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="category">Category</Label>
+                  <Input
+                    id="category"
+                    value={newItem.category}
+                    onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
+                    placeholder="e.g., Baked Goods, Ingredients"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label htmlFor="stock">Current Stock</Label>
+                    <Input
+                      id="stock"
+                      type="number"
+                      value={newItem.stock}
+                      onChange={(e) => setNewItem({ ...newItem, stock: e.target.value })}
+                      placeholder="0"
+                      min="0"
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="threshold">Stock Threshold</Label>
+                    <Input
+                      id="threshold"
+                      type="number"
+                      value={newItem.threshold}
+                      onChange={(e) => setNewItem({ ...newItem, threshold: e.target.value })}
+                      placeholder="0"
+                      min="0"
+                    />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="unit">Unit</Label>
+                  <Input
+                    id="unit"
+                    value={newItem.unit}
+                    onChange={(e) => setNewItem({ ...newItem, unit: e.target.value })}
+                    placeholder="e.g., units, bags, bottles"
+                  />
+                </div>
+                {newItem.stock && newItem.threshold && (
+                  <div className="p-3 bg-secondary rounded-lg space-y-2">
+                    <div className="flex justify-between items-center">
+                      <p className="text-sm text-muted-foreground">Stock Status</p>
+                      <Badge variant="outline" className={
+                        parseInt(newItem.stock) <= parseInt(newItem.threshold) * 0.3 
+                          ? "text-destructive" 
+                          : parseInt(newItem.stock) <= parseInt(newItem.threshold) * 0.6 
+                          ? "text-warning" 
+                          : "text-success"
+                      }>
+                        {parseInt(newItem.stock) <= parseInt(newItem.threshold) * 0.3 
+                          ? "Critical" 
+                          : parseInt(newItem.stock) <= parseInt(newItem.threshold) * 0.6 
+                          ? "Low" 
+                          : "Good"}
+                      </Badge>
+                    </div>
+                    <Progress 
+                      value={Math.min((parseInt(newItem.stock) / parseInt(newItem.threshold)) * 100, 100)} 
+                      className="h-2" 
+                    />
+                  </div>
+                )}
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setDialogOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleAddItem}>Add Item</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Stats Cards */}

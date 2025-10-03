@@ -135,6 +135,30 @@ const Settings = () => {
               </div>
               <Button size="sm">Connect</Button>
             </div>
+            <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
+                  R
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Razorpay</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button size="sm">Connect</Button>
+            </div>
+            <div className="flex items-center justify-between p-4 bg-secondary rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center text-white font-bold">
+                  S
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground">Shopify</p>
+                  <p className="text-sm text-muted-foreground">Not connected</p>
+                </div>
+              </div>
+              <Button size="sm">Connect</Button>
+            </div>
           </div>
         </Card>
 
@@ -149,3 +173,4 @@ const Settings = () => {
 };
 
 export default Settings;
+
