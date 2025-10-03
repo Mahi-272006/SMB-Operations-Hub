@@ -1,73 +1,49 @@
-# Welcome to your Lovable project
+# SMB Operations Dashboard
 
-## Project info
+A **full-stack web application** for small and medium businesses (SMBs) to **manage orders, inventory, analytics, and alerts** in a single dashboard. Built with **React, TypeScript, Tailwind CSS, and Supabase**.
 
-**URL**: https://lovable.dev/projects/61fcb959-f2e7-4c8d-9764-7f06b52ccb16
+---
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Unified Dashboard**: View total sales, inventory status, pending orders, and alerts.  
+- **Orders Management**: Add, view, and track all orders in real-time.  
+- **Inventory Management**: Monitor stock levels with low-stock alerts.  
+- **Analytics**: Visualize sales trends and top-selling products.  
+- **Alerts**: Automatic notifications for low-stock or pending payments.  
+- **Rule-Based Recommendations**: Suggest restocking or sales actions based on trends.  
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/61fcb959-f2e7-4c8d-9764-7f06b52ccb16) and start prompting.
+## Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Frontend:** React, TypeScript, Tailwind CSS, React Query  
+- **Backend:** Supabase (PostgreSQL database, authentication, real-time subscriptions)  
+- **Hosting / Deployment:** Vite dev server / future cloud deployment  
 
-**Use your preferred IDE**
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Usage
 
-Follow these steps:
+- **Orders Page:** View all orders and their status.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- **Inventory Page:** Track stock levels, update items, and receive low-stock alerts.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- **Analytics Page:** Visualize sales trends and product performance.
 
-# Step 3: Install the necessary dependencies.
-npm i
+- **Alerts Page:** See all automatic notifications in real-time.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+## Future Enhancements
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **AI-powered predictive restocking recommendations.**
 
-**Use GitHub Codespaces**
+- **Multi-branch management support.**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **B2B2C customer notifications via WhatsApp/email.**
 
-## What technologies are used for this project?
+- **Advanced analytics with Tableau integration.**
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/61fcb959-f2e7-4c8d-9764-7f06b52ccb16) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
